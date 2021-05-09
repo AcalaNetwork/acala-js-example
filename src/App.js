@@ -78,7 +78,6 @@ function App() {
     }
   }, [api, decimals]);
 
-  console.log(ApiPromise);
   return (
     <div className="App">
       <div>aca balance: {aUSDBalance} aUSD</div>
