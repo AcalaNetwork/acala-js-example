@@ -1,6 +1,6 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { options } from "@acala-network/api";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { web3Enable } from "@polkadot/extension-dapp";
 
 const formatNumber = (number, decimals) => {
@@ -10,12 +10,93 @@ const formatNumber = (number, decimals) => {
 
 function App() {
   const [api, setApi] = useState();
-  const [aUSDBalance, setAUSDBalance] = useState();
+  const [dotBalance, setDotBalance] = useState();
   const [acaBalance, setACABalance] = useState();
   const [decimals, setDecimals] = useState();
   const [extension, setExtension] = useState();
   const [accountList, setAccountList] = useState();
   const [selectedAddress, setSelectedAddress] = useState();
+  const [inputACA, setInputACA] = useState("");
+  const [isSubmiting, setIsSubmiting] = useState(false);
+
+  const swap = useCallback(async () => {
+    if (api && inputACA && extension && selectedAddress && decimals) {
+      setIsSubmiting(true);
+      try {
+        const extrinsic = api.tx.dex.swapWithExactTarget(
+          [
+            {
+              TOKEN: "ACA",
+            },
+            {
+              TOKEN: "AUSD",
+            },
+            {
+              TOKEN: "DOT",
+            },
+          ],
+          "10000000000000",
+          "0xffffffffffffffff"
+        );
+
+        await extrinsic.signAsync(selectedAddress, {
+          signer: extension.signer,
+        });
+
+        await new Promise((resolve, reject) => {
+          extrinsic.send((result) => {
+            if (result.status.isFinalized || result.status.isInBlock) {
+              result.events
+                .filter(({ event: { section } }) => section === "system")
+                .forEach((event) => {
+                  const {
+                    event: { data, method },
+                  } = event;
+
+                  if (method === "ExtrinsicFailed") {
+                    const [dispatchError] = data;
+
+                    let message = dispatchError.type;
+
+                    if (dispatchError.isModule) {
+                      try {
+                        const mod = dispatchError.asModule;
+                        const error = api.registry.findMetaError(
+                          new Uint8Array([
+                            mod.index.toNumber(),
+                            mod.error.toNumber(),
+                          ])
+                        );
+                        message = `${error.section}.${error.name}`;
+                      } catch (error) {
+                        // swallow
+                      }
+                    }
+
+                    reject({ message, result });
+                  } else if (method === "ExtrinsicSuccess") {
+                    resolve({ result });
+                  }
+                });
+            } else if (result.isError) {
+              reject({ result });
+            }
+          });
+        });
+
+        alert("Success");
+        setInputACA("");
+      } catch (error) {
+        if (error.message) {
+          alert(`Failed, ${error.message}`);
+        } else {
+          alert(`Failed`);
+        }
+      } finally {
+        setIsSubmiting(false);
+      }
+    }
+  }, [api, inputACA, extension, selectedAddress, decimals]);
 
   useEffect(() => {
     const provider = new WsProvider(process.env.REACT_APP_ENDPOINT);
@@ -27,19 +108,21 @@ function App() {
     );
 
     api.isReady.then(() => {
+      console.log("Api Ready");
       setApi(api);
     });
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (extension) {
-      const list = await extension.accounts.get();
-      setAccountList(list);
+      extension.accounts.get().then((list) => {
+        setAccountList(list);
+      });
     }
   }, [extension]);
 
   useEffect(() => {
-    if (api?.isReady) {
+    if (api) {
       api.rpc.system.properties().then((result) => {
         let decimals = {};
 
@@ -60,30 +143,27 @@ function App() {
   }, [api]);
 
   useEffect(() => {
-    if (api?.isReady && decimals) {
-      const unsubAUSD = api.query.tokens.accounts(
-        "5FnLzAUmXeTZg5J9Ao5psKU68oA5PBekXqhrZCKDbhSCQi88",
+    if (api && decimals && selectedAddress) {
+      const unsubDOT = api.query.tokens.accounts(
+        selectedAddress,
         {
-          TOKEN: "AUSD",
+          TOKEN: "DOT",
         },
         (result) => {
-          setAUSDBalance(result.free);
+          setDotBalance(result.free);
         }
       );
 
-      const unsubACA = api.query.system.account(
-        "5FnLzAUmXeTZg5J9Ao5psKU68oA5PBekXqhrZCKDbhSCQi88",
-        (result) => {
-          setACABalance(result.data.free);
-        }
-      );
+      const unsubACA = api.query.system.account(selectedAddress, (result) => {
+        setACABalance(result.data.free);
+      });
 
       return () => {
-        unsubAUSD.then((cb) => cb());
+        unsubDOT.then((cb) => cb());
         unsubACA.then((cb) => cb());
       };
     }
-  }, [api, decimals]);
+  }, [api, decimals, selectedAddress]);
 
   useEffect(() => {
     async function enable() {
@@ -97,17 +177,16 @@ function App() {
     enable();
   }, []);
 
-  const formatedAUSD = useMemo(() => {
-    if (!aUSDBalance || !decimals["AUSD"]) return "0";
-    return formatNumber(aUSDBalance, decimals["AUSD"]);
-  }, [aUSDBalance, decimals]);
+  const formatedDOT = useMemo(() => {
+    if (!dotBalance || !decimals["DOT"]) return "0";
+    return formatNumber(dotBalance, decimals["DOT"]);
+  }, [dotBalance, decimals]);
 
   const formatedACA = useMemo(() => {
     if (!acaBalance || !decimals["ACA"]) return "0";
     return formatNumber(acaBalance, decimals["ACA"]);
   }, [acaBalance, decimals]);
 
-  console.log(extension);
   return (
     <div className="App">
       <div>
@@ -116,7 +195,7 @@ function App() {
           value={selectedAddress}
           onChange={(event) => setSelectedAddress(event.target.value)}
         >
-          <option value="" selected disabled hidden>
+          <option value="" disabled hidden>
             Choose Account
           </option>
           {(accountList || []).map(({ address, name }) => (
@@ -126,10 +205,20 @@ function App() {
           ))}
         </select>
       </div>
-      <div>address: {selectedAddress}</div>
-      <div>aca balance: {formatedAUSD} aUSD</div>
-      <div>ausd balance: {formatedACA} ACA</div>
-      <div></div>
+      <div>Address: {selectedAddress}</div>
+      <div>DOT balance: {formatedDOT} DOT</div>
+      <div>ACA balance: {formatedACA} ACA</div>
+      <div>
+        Input ACA:
+        <input
+          type="text"
+          value={inputACA}
+          onChange={(event) => setInputACA(event.target.value)}
+        />
+        <button disabled={isSubmiting} onClick={swap}>
+          SWAP DOT
+        </button>
+      </div>
     </div>
   );
 }
