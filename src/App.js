@@ -35,7 +35,7 @@ function App() {
               TOKEN: "DOT",
             },
           ],
-          "10000000000000",
+          parseInt(inputACA * 10 ** decimals["ACA"]),
           "0xffffffffffffffff"
         );
 
