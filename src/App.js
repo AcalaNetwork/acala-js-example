@@ -1,17 +1,24 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { options } from "@acala-network/api";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { web3Enable } from "@polkadot/extension-dapp";
+
+const formatNumber = (number, decimals) => {
+  if (number.toString() === "0") return "0";
+  return (Number(number.toString()) / 10 ** decimals).toFixed(5);
+};
 
 function App() {
   const [api, setApi] = useState();
   const [aUSDBalance, setAUSDBalance] = useState();
   const [acaBalance, setACABalance] = useState();
   const [decimals, setDecimals] = useState();
+  const [extension, setExtension] = useState();
+  const [accountList, setAccountList] = useState();
+  const [selectedAddress, setSelectedAddress] = useState();
 
   useEffect(() => {
-    const provider = new WsProvider(
-      "wss://acala-mandala.api.onfinality.io/public-ws"
-    );
+    const provider = new WsProvider(process.env.REACT_APP_ENDPOINT);
 
     const api = new ApiPromise(
       options({
@@ -23,6 +30,13 @@ function App() {
       setApi(api);
     });
   }, []);
+
+  useEffect(async () => {
+    if (extension) {
+      const list = await extension.accounts.get();
+      setAccountList(list);
+    }
+  }, [extension]);
 
   useEffect(() => {
     if (api?.isReady) {
@@ -53,21 +67,14 @@ function App() {
           TOKEN: "AUSD",
         },
         (result) => {
-          setAUSDBalance(
-            (Number(result.free.toString()) / 10 ** decimals["AUSD"]).toFixed(5)
-          );
+          setAUSDBalance(result.free);
         }
       );
 
       const unsubACA = api.query.system.account(
         "5FnLzAUmXeTZg5J9Ao5psKU68oA5PBekXqhrZCKDbhSCQi88",
         (result) => {
-          setACABalance(
-            (
-              Number(result.data.free.toString()) /
-              10 ** decimals["ACA"]
-            ).toFixed(5)
-          );
+          setACABalance(result.data.free);
         }
       );
 
@@ -78,10 +85,51 @@ function App() {
     }
   }, [api, decimals]);
 
+  useEffect(() => {
+    async function enable() {
+      const extensions = await web3Enable("ACALA EXAMPLE");
+      const extension =
+        extensions.find(({ name }) => name === "polkadot-js") || null;
+
+      setExtension(extension);
+    }
+
+    enable();
+  }, []);
+
+  const formatedAUSD = useMemo(() => {
+    if (!aUSDBalance || !decimals["AUSD"]) return "0";
+    return formatNumber(aUSDBalance, decimals["AUSD"]);
+  }, [aUSDBalance, decimals]);
+
+  const formatedACA = useMemo(() => {
+    if (!acaBalance || !decimals["ACA"]) return "0";
+    return formatNumber(acaBalance, decimals["ACA"]);
+  }, [acaBalance, decimals]);
+
+  console.log(extension);
   return (
     <div className="App">
-      <div>aca balance: {aUSDBalance} aUSD</div>
-      <div>ausd balance: {acaBalance} ACA</div>
+      <div>
+        <select
+          defaultValue=""
+          value={selectedAddress}
+          onChange={(event) => setSelectedAddress(event.target.value)}
+        >
+          <option value="" selected disabled hidden>
+            Choose Account
+          </option>
+          {(accountList || []).map(({ address, name }) => (
+            <option key={address} value={address}>
+              {name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>address: {selectedAddress}</div>
+      <div>aca balance: {formatedAUSD} aUSD</div>
+      <div>ausd balance: {formatedACA} ACA</div>
+      <div></div>
     </div>
   );
 }
