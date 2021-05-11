@@ -36,7 +36,7 @@ function App() {
             },
           ],
           parseInt(inputACA * 10 ** decimals["ACA"]),
-          "0xffffffffffff"
+          "0xffffffffffffffff"
         );
 
         await extrinsic.signAsync(selectedAddress, {
