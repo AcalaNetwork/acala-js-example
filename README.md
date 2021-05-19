@@ -6,10 +6,47 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `yarn`
+
+To install the relevant packages and dependencies.\
+
+```
+yarn install v1.22.10
+[1/4] 🔍  Resolving packages...
+[2/4] 🚚  Fetching packages...
+[3/4] 🔗  Linking dependencies...
+warning "@acala-network/api > @acala-network/api-derive > @open-web3/orml-types@0.9.3" has unmet peer dependency "@polkadot/typegen@4.*".
+warning " > @polkadot/extension-dapp@0.37.2" has unmet peer dependency "@polkadot/util@*".
+warning " > @polkadot/extension-dapp@0.37.2" has unmet peer dependency "@polkadot/util-crypto@*".
+warning " > @testing-library/user-event@12.8.3" has unmet peer dependency "@testing-library/dom@>=7.21.4".
+warning "react-scripts > @typescript-eslint/eslint-plugin > tsutils@3.20.0" has unmet peer dependency "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta".
+[4/4] 🔨  Building fresh packages...
+✨  Done in 521.46s.
+```
+
+sidebar: you may ignore the ^ warnings
+
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+```
+Compiled successfully!
+
+You can now view acala-example in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://<ip-address>:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+```
+
+Open [http://localhost:3000](http://localhost:3000) (if not automatically done) to view it in the browser.
+
+Depending on you're setup, you might be presented with a window from `Polkadot.js` to authorize access to `ACALA EXAMPLE` and here is a sample screen-shot.
+
+![polkadot-js-authorize-window](img/polkadot-js-authorize-window.png)
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
