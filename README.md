@@ -73,7 +73,7 @@ Note that the development build is not optimized.
 To create a production build, use yarn build.
 ```
 
-Open [http://localhost:3000](http://localhost:3000) (if not automatically done) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000) (if not automatically done) to view it in your default browser.
 
 Depending on you're setup, you might be presented with a window from `Polkadot.js` to authorize access to `ACALA EXAMPLE` and here is a sample screen-shot. Go ahead and give access to the app.
 
@@ -84,6 +84,31 @@ sidebar: if port 3000 is currently being used by another process, it will give y
 Next, on your default browser, a new tab will open, and you'll see something like this:
 
 ![acala-js-example-react-app-swap](img/acala-js-example-react-app-swap.png)
+
+Assuming you've got the pre-requisites sorted ...have an Acala testnet account with some test `DOT` and `ACA` from the faucet, we will attempt to swap some ACA for DOT using the `DEX` module.
+
+1st select the appropriate wallet account in the drop-down.\
+2nd input a small amount of ACA e.g. `0.001` and click on the **SWAP DOT** button.
+
+Now you'll be prompted to sign the transaction, which will call the method `dex.swapWithExactTarget(path, target_amount, max_supply_amount)`. Go ahead and sign the transaction.
+
+![acala-js-example-authorise-dex-swap](img/acala-js-example-authorise-dex-swap.png)
+
+When the transactions executes successfully, you'll notice some changes on the screen. The `DOT` balance increased by ~1 and `ACA` balance decreased by ~2.
+
+![acala-js-example-react-app-swap-results](img/acala-js-example-react-app-swap-results.png)
+
+That's it, you've successfully managed to build a simple react app, which uses Acala's API to submit a DEX SWAP transcation on testnet.
+
+For a more in-depth inspection of the above transaction, you may look for your account using any of the polkadot explorers. Here I am using **subscan** and the URL will be something like this...
+
+```
+https://acala-testnet.subscan.io/account/<acala-account>?tab=transfer
+```
+
+Paste this URL in your default browser and replace it with your acala-acccount and it should pull up all the Extrinsics. You're looking for the most recent `Extrinsic ID`, and click on the respective `Extrinsic Hash`.
+
+![subscan-look-up-acala-account](img/subscan-look-up-acala-account.png)
 
 ## Learn More
 
