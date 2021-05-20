@@ -106,9 +106,31 @@ For a more in-depth inspection of the above transaction, you may look for your a
 https://acala-testnet.subscan.io/account/<acala-account>?tab=transfer
 ```
 
-Paste this URL in your default browser and replace it with your acala-acccount and it should pull up all the Extrinsics. You're looking for the most recent `Extrinsic ID`, and click on the respective `Extrinsic Hash`.
+Paste this URL in your default browser and replace it with your acala-acccount and it should pull up all the Extrinsics.
 
 ![subscan-look-up-acala-account](img/subscan-look-up-acala-account.png)
+
+You're looking for the most recent `Extrinsic ID`, and click on the respective `Extrinsic Hash`.
+
+![subscan-look-up-acala-extrinsic](img/subscan-look-up-acala-extrinsic.png)
+
+Now you'll be able to see more details for the Extrinsic, covering areas such as:
+
+```
+Time
+Block
+Life Time
+Extrinsic Hash
+Module
+Call
+Sender
+Fee
+Nonce
+Result
+Parameters
+Signature
+Events
+```
 
 ## Learn More
 
