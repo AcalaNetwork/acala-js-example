@@ -189,6 +189,7 @@ function App() {
 
   return (
     <div className="App">
+      <div>------------------------------------------</div>
       <div>
         <select
           defaultValue=""
@@ -205,9 +206,13 @@ function App() {
           ))}
         </select>
       </div>
+      <div>------------------------------------------</div>
       <div>Address: {selectedAddress}</div>
+      <div>------------------------------------------</div>
       <div>DOT balance: {formatedDOT} DOT</div>
+      <div>------------------------------------------</div>
       <div>ACA balance: {formatedACA} ACA</div>
+      <div>------------------------------------------</div>
       <div>
         Input ACA:
         <input
@@ -219,6 +224,7 @@ function App() {
           SWAP DOT
         </button>
       </div>
+      <div>------------------------------------------</div>
     </div>
   );
 }
