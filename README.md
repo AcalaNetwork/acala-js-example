@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Requirements
+- installed `yarn`
+- installed polkadot.js browser extension with set up accounts
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -32,30 +36,6 @@ Runs the app in the development mode.\
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## What To Expect
 
@@ -81,22 +61,27 @@ Depending on you're setup, you might be presented with a window from `Polkadot.j
 
 sidebar: if port 3000 is currently being used by another process, it will give you an option to pick the next available (i.e. 3001)
 
-Next, on your default browser, a new tab will open, and you'll see something like this:
+Next, on your default browser, a new tab will open. And you will be presented with choice of selecting the account:
 
-![acala-js-example-react-app-swap](img/acala-js-example-react-app-swap.png)
+![init-swap-screen](https://i.imgur.com/7WJTq3V.png)
 
-Assuming you've got the pre-requisites sorted ...have an Acala testnet account with some test `DOT` and `ACA` from the faucet, we will attempt to swap some ACA for DOT using the `DEX` module.
+After you pick an account from the Choose Account dropdown the app will load your balances and and price of ACA to AUSD.
+
+![swap-with-input](https://i.imgur.com/XdaGN5J.png)
+
+Assuming you've got the pre-requisites sorted ...have an Acala testnet account with some test `AUSD` and `ACA` from the faucet, we will attempt to swap some ACA for AUSD using the `DEX` module.
 
 1st select the appropriate wallet account in the drop-down.\
-2nd input a small amount of ACA e.g. `0.001` and click on the **SWAP DOT** button.
+2nd input a small amount of ACA e.g. `0.5` and click on the **SWAP ACA** button.
 
-Now you'll be prompted to sign the transaction, which will call the method `dex.swapWithExactTarget(path, target_amount, max_supply_amount)`. Go ahead and sign the transaction.
+Now you'll be prompted to sign the transaction, which will call the method `dex.swapWithExactSupply(path, supplyAmount, minTargetAmount)`. Go ahead and sign the transaction.
 
 ![acala-js-example-authorise-dex-swap](img/acala-js-example-authorise-dex-swap.png)
 
-When the transactions executes successfully, you'll notice some changes on the screen. The `DOT` balance increased by ~1 and `ACA` balance decreased by ~2.
+When the transactions executes successfully, you'll notice some changes on the screen. The `ACA` balance decreased by ~0.5 and `AUSD` balance increased.
 
-![acala-js-example-react-app-swap-results](img/acala-js-example-react-app-swap-results.png)
+![acala-js-example-react-app-swap-results](https://i.imgur.com/VIeocsj.png)
+
 
 That's it, you've successfully managed to build a simple react app, which uses Acala's API to submit a DEX SWAP transcation on testnet.
 
@@ -107,57 +92,8 @@ https://acala-testnet.subscan.io/account/<acala-account>?tab=transfer
 ```
 
 Paste this URL in your default browser and replace it with your acala-acccount and it should pull up all the Extrinsics.
+![subscan-look-up-acala-account](https://i.imgur.com/fFoCqWG.png)
 
-![subscan-look-up-acala-account](img/subscan-look-up-acala-account.png)
 
 You're looking for the most recent `Extrinsic ID`, and click on the respective `Extrinsic Hash`.
-
-![subscan-look-up-acala-extrinsic](img/subscan-look-up-acala-extrinsic.png)
-
-Now you'll be able to see more details for the Extrinsic, covering areas such as:
-
-```
-Time
-Block
-Life Time
-Extrinsic Hash
-Module
-Call
-Sender
-Fee
-Nonce
-Result
-Parameters
-Signature
-Events
-```
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![subscan-look-up-acala-extrinsic](https://i.imgur.com/gQXH0t7.png)

@@ -18,12 +18,15 @@ function App() {
   const [selectedAddress, setSelectedAddress] = useState();
   const [inputACA, setInputACA] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [ausdPerAca, setAusdPerAca] = useState(0);
 
   const swap = useCallback(async () => {
     if (api && inputACA && extension && selectedAddress && decimals) {
       setIsSubmiting(true);
+      const valueFormatted = parseInt(inputACA * 10 ** decimals["ACA"])
       try {
-        const extrinsic = api.tx.dex.swapWithExactTarget(
+        const extrinsic = api.tx.dex.swapWithExactSupply(
+          // path
           [
             {
               TOKEN: "ACA",
@@ -31,12 +34,11 @@ function App() {
             {
               TOKEN: "AUSD",
             },
-            {
-              TOKEN: "DOT",
-            },
           ],
-          parseInt(inputACA * 10 ** decimals["ACA"]),
-          "0xffffffffffffffff"
+          // supplyAmount
+          valueFormatted,
+          // minTargetAmount
+          "0x0"
         );
 
         await extrinsic.signAsync(selectedAddress, {
@@ -113,6 +115,19 @@ function App() {
     });
   }, []);
 
+  useEffect(async () => {
+    if (api && decimals) {
+      const ausdAcaPool = await api.query.dex.liquidityPool([
+        { Token: "ACA" },
+        { Token: "AUSD" },
+      ]);
+      const ausdPerAca = (+ausdAcaPool[1].toString() / 10 ** decimals["AUSD"]) / 
+        (+ausdAcaPool[0].toString() / 10 ** decimals["ACA"])
+
+      setAusdPerAca(ausdPerAca);
+    }
+  }, [api, decimals])
+
   useEffect(() => {
     if (extension) {
       extension.accounts.get().then((list) => {
@@ -136,7 +151,6 @@ function App() {
         for (let i = 0; i < tokenSymbol.length; i++) {
           decimals[tokenSymbol[i]] = tokenDecimals[i].toNumber();
         }
-
         setDecimals(decimals);
       });
     }
@@ -147,7 +161,7 @@ function App() {
       const unsubDOT = api.query.tokens.accounts(
         selectedAddress,
         {
-          TOKEN: "DOT",
+          TOKEN: "AUSD",
         },
         (result) => {
           setDotBalance(result.free);
@@ -178,8 +192,8 @@ function App() {
   }, []);
 
   const formatedDOT = useMemo(() => {
-    if (!dotBalance || !decimals["DOT"]) return "0";
-    return formatNumber(dotBalance, decimals["DOT"]);
+    if (!dotBalance || !decimals["AUSD"]) return "0";
+    return formatNumber(dotBalance, decimals["AUSD"]);
   }, [dotBalance, decimals]);
 
   const formatedACA = useMemo(() => {
@@ -187,9 +201,13 @@ function App() {
     return formatNumber(acaBalance, decimals["ACA"]);
   }, [acaBalance, decimals]);
 
+  if (!api) {
+    return <div>loading...</div>
+  }
+
   return (
     <div className="App">
-      <div>------------------------------------------</div>
+      <h2>Swap ACA to AUSD example</h2>
       <div>
         <select
           defaultValue=""
@@ -207,24 +225,27 @@ function App() {
         </select>
       </div>
       <div>------------------------------------------</div>
-      <div>Address: {selectedAddress}</div>
+      <div>Address: {selectedAddress || 'account not selected'}</div>
       <div>------------------------------------------</div>
-      <div>DOT balance: {formatedDOT} DOT</div>
-      <div>------------------------------------------</div>
+     {selectedAddress && (<div>
       <div>ACA balance: {formatedACA} ACA</div>
       <div>------------------------------------------</div>
       <div>
-        Input ACA:
+        Input ACA:&nbsp;
         <input
           type="text"
           value={inputACA}
           onChange={(event) => setInputACA(event.target.value)}
         />
         <button disabled={isSubmiting} onClick={swap}>
-          SWAP DOT
+          SWAP ACA
         </button>
+        <div>To receive: {(inputACA * ausdPerAca).toFixed(2) || 0} AUSD</div>
       </div>
       <div>------------------------------------------</div>
+      <div>AUSD balance: {formatedDOT} AUSD</div>
+      <div>------------------------------------------</div>
+     </div>)}
     </div>
   );
 }
