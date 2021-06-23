@@ -18,7 +18,7 @@ function App() {
   const [selectedAddress, setSelectedAddress] = useState();
   const [inputACA, setInputACA] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const [acaPerDot, setAcaPerDot] = useState(0);
+  const [ausdPerAca, setAusdPerAca] = useState(0);
 
   const swap = useCallback(async () => {
     if (api && inputACA && extension && selectedAddress && decimals) {
@@ -33,9 +33,6 @@ function App() {
             },
             {
               TOKEN: "AUSD",
-            },
-            {
-              TOKEN: "DOT",
             },
           ],
           // supplyAmount
@@ -120,23 +117,14 @@ function App() {
 
   useEffect(async () => {
     if (api && decimals) {
-      const ausdDotPool = await api.query.dex.liquidityPool([
-        { Token: "AUSD" },
-        { Token: "DOT" },
-      ]);
-      const ausdPerDot = (+ausdDotPool[0].toString() / 10 ** decimals["AUSD"]) / 
-        (+ausdDotPool[1].toString() / 10 ** decimals["DOT"]);
-
-      // notice that
       const ausdAcaPool = await api.query.dex.liquidityPool([
         { Token: "ACA" },
         { Token: "AUSD" },
       ]);
       const ausdPerAca = (+ausdAcaPool[1].toString() / 10 ** decimals["AUSD"]) / 
         (+ausdAcaPool[0].toString() / 10 ** decimals["ACA"])
-      const acaPerDot = ausdPerAca / ausdPerDot;
 
-      setAcaPerDot(acaPerDot);
+      setAusdPerAca(ausdPerAca);
     }
   }, [api, decimals])
 
@@ -173,7 +161,7 @@ function App() {
       const unsubDOT = api.query.tokens.accounts(
         selectedAddress,
         {
-          TOKEN: "DOT",
+          TOKEN: "AUSD",
         },
         (result) => {
           setDotBalance(result.free);
@@ -204,8 +192,8 @@ function App() {
   }, []);
 
   const formatedDOT = useMemo(() => {
-    if (!dotBalance || !decimals["DOT"]) return "0";
-    return formatNumber(dotBalance, decimals["DOT"]);
+    if (!dotBalance || !decimals["AUSD"]) return "0";
+    return formatNumber(dotBalance, decimals["AUSD"]);
   }, [dotBalance, decimals]);
 
   const formatedACA = useMemo(() => {
@@ -219,8 +207,7 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Swap ACA to DOT example</h2>
-      <div>------------------------------------------</div>
+      <h2>Swap ACA to AUSD example</h2>
       <div>
         <select
           defaultValue=""
@@ -253,10 +240,10 @@ function App() {
         <button disabled={isSubmiting} onClick={swap}>
           SWAP ACA
         </button>
-        <span>&nbsp;To receive: {(inputACA * acaPerDot).toFixed(2) || 0} DOT</span>
+        <div>To receive: {(inputACA * ausdPerAca).toFixed(2) || 0} AUSD</div>
       </div>
       <div>------------------------------------------</div>
-      <div>DOT balance: {formatedDOT} DOT</div>
+      <div>AUSD balance: {formatedDOT} AUSD</div>
       <div>------------------------------------------</div>
      </div>)}
     </div>
