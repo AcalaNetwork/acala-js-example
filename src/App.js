@@ -18,6 +18,7 @@ function App() {
   const [selectedAddress, setSelectedAddress] = useState();
   const [inputACA, setInputACA] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const [acaPerDot, setAcaPerDot] = useState(0);
 
   const swap = useCallback(async () => {
     if (api && inputACA && extension && selectedAddress && decimals) {
@@ -117,6 +118,28 @@ function App() {
     });
   }, []);
 
+  useEffect(async () => {
+    if (api && decimals) {
+      const ausdDotPool = await api.query.dex.liquidityPool([
+        { Token: "AUSD" },
+        { Token: "DOT" },
+      ]);
+      const ausdPerDot = (+ausdDotPool[0].toString() / 10 ** decimals["AUSD"]) / 
+        (+ausdDotPool[1].toString() / 10 ** decimals["DOT"]);
+
+      // notice that
+      const ausdAcaPool = await api.query.dex.liquidityPool([
+        { Token: "ACA" },
+        { Token: "AUSD" },
+      ]);
+      const ausdPerAca = (+ausdAcaPool[1].toString() / 10 ** decimals["AUSD"]) / 
+        (+ausdAcaPool[0].toString() / 10 ** decimals["ACA"])
+      const acaPerDot = ausdPerAca / ausdPerDot;
+
+      setAcaPerDot(acaPerDot);
+    }
+  }, [api, decimals])
+
   useEffect(() => {
     if (extension) {
       extension.accounts.get().then((list) => {
@@ -190,6 +213,10 @@ function App() {
     return formatNumber(acaBalance, decimals["ACA"]);
   }, [acaBalance, decimals]);
 
+  if (!api) {
+    return <div>loading...</div>
+  }
+
   return (
     <div className="App">
       <h2>Swap ACA to DOT example</h2>
@@ -226,6 +253,7 @@ function App() {
         <button disabled={isSubmiting} onClick={swap}>
           SWAP ACA
         </button>
+        <span>&nbsp;To receive: {(inputACA * acaPerDot).toFixed(2) || 0} DOT</span>
       </div>
       <div>------------------------------------------</div>
       <div>DOT balance: {formatedDOT} DOT</div>
