@@ -22,8 +22,10 @@ function App() {
   const swap = useCallback(async () => {
     if (api && inputACA && extension && selectedAddress && decimals) {
       setIsSubmiting(true);
+      const valueFormatted = parseInt(inputACA * 10 ** decimals["ACA"])
       try {
-        const extrinsic = api.tx.dex.swapWithExactTarget(
+        const extrinsic = api.tx.dex.swapWithExactSupply(
+          // path
           [
             {
               TOKEN: "ACA",
@@ -35,8 +37,10 @@ function App() {
               TOKEN: "DOT",
             },
           ],
-          parseInt(inputACA * 10 ** decimals["ACA"]),
-          "0xffffffffffffffff"
+          // supplyAmount
+          valueFormatted,
+          // minTargetAmount
+          "0x0"
         );
 
         await extrinsic.signAsync(selectedAddress, {
@@ -136,7 +140,6 @@ function App() {
         for (let i = 0; i < tokenSymbol.length; i++) {
           decimals[tokenSymbol[i]] = tokenDecimals[i].toNumber();
         }
-
         setDecimals(decimals);
       });
     }
@@ -189,6 +192,7 @@ function App() {
 
   return (
     <div className="App">
+      <h2>Swap ACA to DOT example</h2>
       <div>------------------------------------------</div>
       <div>
         <select
@@ -207,24 +211,26 @@ function App() {
         </select>
       </div>
       <div>------------------------------------------</div>
-      <div>Address: {selectedAddress}</div>
+      <div>Address: {selectedAddress || 'account not selected'}</div>
       <div>------------------------------------------</div>
-      <div>DOT balance: {formatedDOT} DOT</div>
-      <div>------------------------------------------</div>
+     {selectedAddress && (<div>
       <div>ACA balance: {formatedACA} ACA</div>
       <div>------------------------------------------</div>
       <div>
-        Input ACA:
+        Input ACA:&nbsp;
         <input
           type="text"
           value={inputACA}
           onChange={(event) => setInputACA(event.target.value)}
         />
         <button disabled={isSubmiting} onClick={swap}>
-          SWAP DOT
+          SWAP ACA
         </button>
       </div>
       <div>------------------------------------------</div>
+      <div>DOT balance: {formatedDOT} DOT</div>
+      <div>------------------------------------------</div>
+     </div>)}
     </div>
   );
 }
