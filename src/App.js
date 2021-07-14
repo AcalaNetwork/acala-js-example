@@ -1,7 +1,19 @@
-import { ApiPromise, WsProvider } from "@polkadot/api";
-import { options } from "@acala-network/api";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { web3Enable } from "@polkadot/extension-dapp";
+import {
+  ApiPromise,
+  WsProvider
+} from "@polkadot/api";
+import {
+  options
+} from "@acala-network/api";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+import {
+  web3Enable
+} from "@polkadot/extension-dapp";
 
 const formatNumber = (number, decimals) => {
   if (number.toString() === "0") return "0";
@@ -27,8 +39,7 @@ function App() {
       try {
         const extrinsic = api.tx.dex.swapWithExactSupply(
           // path
-          [
-            {
+          [{
               TOKEN: "ACA",
             },
             {
@@ -49,10 +60,17 @@ function App() {
           extrinsic.send((result) => {
             if (result.status.isFinalized || result.status.isInBlock) {
               result.events
-                .filter(({ event: { section } }) => section === "system")
+                .filter(({
+                  event: {
+                    section
+                  }
+                }) => section === "system")
                 .forEach((event) => {
                   const {
-                    event: { data, method },
+                    event: {
+                      data,
+                      method
+                    },
                   } = event;
 
                   if (method === "ExtrinsicFailed") {
@@ -75,13 +93,20 @@ function App() {
                       }
                     }
 
-                    reject({ message, result });
+                    reject({
+                      message,
+                      result
+                    });
                   } else if (method === "ExtrinsicSuccess") {
-                    resolve({ result });
+                    resolve({
+                      result
+                    });
                   }
                 });
             } else if (result.isError) {
-              reject({ result });
+              reject({
+                result
+              });
             }
           });
         });
@@ -101,7 +126,7 @@ function App() {
   }, [api, inputACA, extension, selectedAddress, decimals]);
 
   useEffect(() => {
-    const provider = new WsProvider(process.env.REACT_APP_ENDPOINT);
+    const provider = new WsProvider(process.env.WS_NODE_ENDPOINT);
 
     const api = new ApiPromise(
       options({
@@ -117,11 +142,14 @@ function App() {
 
   useEffect(async () => {
     if (api && decimals) {
-      const ausdAcaPool = await api.query.dex.liquidityPool([
-        { Token: "ACA" },
-        { Token: "AUSD" },
+      const ausdAcaPool = await api.query.dex.liquidityPool([{
+          Token: "ACA"
+        },
+        {
+          Token: "AUSD"
+        },
       ]);
-      const ausdPerAca = (+ausdAcaPool[1].toString() / 10 ** decimals["AUSD"]) / 
+      const ausdPerAca = (+ausdAcaPool[1].toString() / 10 ** decimals["AUSD"]) /
         (+ausdAcaPool[0].toString() / 10 ** decimals["ACA"])
 
       setAusdPerAca(ausdPerAca);
@@ -141,12 +169,12 @@ function App() {
       api.rpc.system.properties().then((result) => {
         let decimals = {};
 
-        const tokenDecimals = result.tokenDecimals.isNone
-          ? []
-          : result.tokenDecimals.value;
-        const tokenSymbol = result.tokenSymbol.isNone
-          ? []
-          : result.tokenSymbol.value;
+        const tokenDecimals = result.tokenDecimals.isNone ?
+          [] :
+          result.tokenDecimals.value;
+        const tokenSymbol = result.tokenSymbol.isNone ?
+          [] :
+          result.tokenSymbol.value;
 
         for (let i = 0; i < tokenSymbol.length; i++) {
           decimals[tokenSymbol[i]] = tokenDecimals[i].toNumber();
@@ -159,8 +187,7 @@ function App() {
   useEffect(() => {
     if (api && decimals && selectedAddress) {
       const unsubDOT = api.query.tokens.accounts(
-        selectedAddress,
-        {
+        selectedAddress, {
           TOKEN: "AUSD",
         },
         (result) => {
@@ -183,7 +210,9 @@ function App() {
     async function enable() {
       const extensions = await web3Enable("ACALA EXAMPLE");
       const extension =
-        extensions.find(({ name }) => name === "polkadot-js") || null;
+        extensions.find(({
+          name
+        }) => name === "polkadot-js") || null;
 
       setExtension(extension);
     }
@@ -202,52 +231,88 @@ function App() {
   }, [acaBalance, decimals]);
 
   if (!api) {
-    return <div>loading...</div>
+    return <div > loading... < /div>
   }
 
-  return (
-    <div className="App">
-      <h2>Swap ACA to AUSD example</h2>
-      <div>
-        <select
-          defaultValue=""
-          value={selectedAddress}
-          onChange={(event) => setSelectedAddress(event.target.value)}
-        >
-          <option value="" disabled hidden>
-            Choose Account
-          </option>
-          {(accountList || []).map(({ address, name }) => (
-            <option key={address} value={address}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>------------------------------------------</div>
-      <div>Address: {selectedAddress || 'account not selected'}</div>
-      <div>------------------------------------------</div>
-     {selectedAddress && (<div>
-      <div>ACA balance: {formatedACA} ACA</div>
-      <div>------------------------------------------</div>
-      <div>
-        Input ACA:&nbsp;
-        <input
-          type="text"
-          value={inputACA}
-          onChange={(event) => setInputACA(event.target.value)}
-        />
-        <button disabled={isSubmiting} onClick={swap}>
-          SWAP ACA
-        </button>
-        <div>To receive: {(inputACA * ausdPerAca).toFixed(2) || 0} AUSD</div>
-      </div>
-      <div>------------------------------------------</div>
-      <div>AUSD balance: {formatedDOT} AUSD</div>
-      <div>------------------------------------------</div>
-     </div>)}
-    </div>
-  );
-}
+  return ( <
+      div className = "App" >
+      <
+      h2 > Swap ACA to AUSD example < /h2> <
+      div >
+      <
+      select defaultValue = ""
+      value = {
+        selectedAddress
+      }
+      onChange = {
+        (event) => setSelectedAddress(event.target.value)
+      } >
+      <
+      option value = ""
+      disabled hidden >
+      Choose Account <
+      /option> {
+        (accountList || []).map(({
+          address,
+          name
+        }) => ( <
+          option key = {
+            address
+          }
+          value = {
+            address
+          } > {
+            name
+          } <
+          /option>
+        ))
+      } <
+      /select> <
+      /div> <
+      div > -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- < /div> <
+      div > Address: {
+        selectedAddress || 'account not selected'
+      } < /div> <
+      div > -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- < /div> {
+        selectedAddress && ( < div >
+          <
+          div > ACA balance: {
+            formatedACA
+          }
+          ACA < /div> <
+          div > -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- < /div> <
+          div >
+          Input ACA: & nbsp; <
+          input type = "text"
+          value = {
+            inputACA
+          }
+          onChange = {
+            (event) => setInputACA(event.target.value)
+          }
+          /> <
+          button disabled = {
+            isSubmiting
+          }
+          onClick = {
+            swap
+          } >
+          SWAP ACA <
+          /button> <
+          div > To receive: {
+            (inputACA * ausdPerAca).toFixed(2) || 0
+          }
+          AUSD < /div> <
+          /div> <
+          div > -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- < /div> <
+          div > AUSD balance: {
+            formatedDOT
+          }
+          AUSD < /div> <
+          div > -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- < /div> <
+          /div>)} <
+          /div>
+        );
+      }
 
-export default App;
+      export default App;
