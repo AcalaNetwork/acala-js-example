@@ -2,7 +2,7 @@ const getPolkadotApi = require('./getPolkadotApi');
 const getSigner = require('./getSigner');
 const getSystemParameters = require('./getSystemParameters');
 
-const amountOfACAToConvert = 1;
+const amountOfACAToConvert = 10;
 
 const swapWithExactSupply = async () => {
     const api = await getPolkadotApi();
@@ -10,20 +10,18 @@ const swapWithExactSupply = async () => {
         symbolsDecimals
     } = await getSystemParameters();
 
-
-    const supplyAmount = amountOfACAToConvert * 10 ** symbolsDecimals["ACA"];
+    const signer = getSigner();
+    const supplyAmount = amountOfACAToConvert * 10 ** symbolsDecimals["KAR"];
 
     const path = [{
-            TOKEN: "ACA",
+            TOKEN: "KAR",
         },
         {
-            TOKEN: "AUSD",
+            TOKEN: "KUSD",
         },
     ]
     const minTargetAmount = "0x0";
 
-
-    const signer = getSigner();
     const extrinsic = api.tx.dex.swapWithExactSupply(
         path,
         supplyAmount,

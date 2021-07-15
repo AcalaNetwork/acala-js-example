@@ -11,17 +11,17 @@ const swapWithExactTarget = async () => {
     } = await getSystemParameters();
 
     const signer = getSigner();
-    const targetAmount = amountOfAUSDToConvert * 10 ** symbolsDecimals["AUSD"];
+    const targetAmount = amountOfAUSDToConvert * 10 ** symbolsDecimals["KUSD"];
 
     const path = [{
-            TOKEN: "ACA",
+            TOKEN: "KAR",
         },
         {
-            TOKEN: "AUSD",
+            TOKEN: "KUSD",
         },
     ]
-    // we are willing to spend maximum 2 ACA to get 1 AUSD
-    const maxSupplyAmount = 2 * 10 ** symbolsDecimals["ACA"];
+    // we are willing to spend maximum 2 KAR to get 1 KUSD
+    const maxSupplyAmount = 2 * 10 ** symbolsDecimals["KAR"];
 
     const extrinsic = api.tx.dex.swapWithExactTarget(
         path,
