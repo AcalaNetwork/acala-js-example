@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+# Acala examples
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The project contains frontend and backend examples of code to build services that will use Acala / Karura ledger.
+
+You can check backend examples here:
+[DEX Backend Examples](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/dex-examples/dex-examples.md)
+
+To run the frontend app, you can follow the guide here.
 
 ## Requirements
 - installed `yarn`
