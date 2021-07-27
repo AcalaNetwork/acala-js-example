@@ -22,5 +22,5 @@ Reading the state of the chain doesn't require SEED_PHRASE to be specified
 
 ### Running examples
 ```bash=
-node src/dex-examples/getLiquidity.js
+npx ts-node src/dex-examples/getLiquidity.js
 ```
