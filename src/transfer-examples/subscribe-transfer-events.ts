@@ -1,4 +1,8 @@
-import { CurrencyId, Balance, AccountId } from '@acala-network/types/interfaces';
+import {
+  CurrencyId,
+  Balance,
+  AccountId,
+} from "@acala-network/types/interfaces";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSystemParameters from "../utils/getSystemParameters";
 
@@ -12,7 +16,7 @@ const subscribeTransferEvents = async () => {
       const { section, method } = event.event;
 
       // subscribe transfer through currencies section
-      if (section === 'currencies' && method === 'Transferred') {
+      if (section === "currencies" && method === "Transferred") {
         // [ASSET, ORIGIN, TARGET, AMOUNT]
         const data = event.event.data;
 
@@ -21,14 +25,21 @@ const subscribeTransferEvents = async () => {
         const target = data[2] as AccountId;
         const amount = data[3] as Balance;
 
-        const decimal = token.isToken ? symbolsDecimals[token.asToken.toString()] : 
-          token.isDexShare ? symbolsDecimals[token.asDexShare[0].asToken.toString()] : 12;
+        const decimal = token.isToken
+          ? symbolsDecimals[token.asToken.toString()]
+          : token.isDexShare
+          ? symbolsDecimals[token.asDexShare[0].asToken.toString()]
+          : 12;
 
-        console.log(`transfer ${Number(amount.toString()) / (10 ** decimal)} ${(data[0] as CurrencyId).toString()} from ${origin.toHuman()} to ${target.toHuman()}`);
+        console.log(
+          `transfer ${Number(amount.toString()) / 10 ** decimal} ${(
+            data[0] as CurrencyId
+          ).toString()} from ${origin.toHuman()} to ${target.toHuman()}`
+        );
       }
 
       // subscribe transfer through balances section
-      if (section === 'balances' && method === 'Transfer') {
+      if (section === "balances" && method === "Transfer") {
         // [ORIGIN, TARGET, AMOUNT]
         const data = event.event.data;
 
@@ -37,12 +48,18 @@ const subscribeTransferEvents = async () => {
         const amount = data[2] as Balance;
 
         // pls. ensure the native token
-        const decimal = symbolsDecimals['KAR'];
+        const decimal = symbolsDecimals["KAR"];
 
-        console.log(`transfer ${Number(amount.toString()) / (10 ** decimal)} KAR from ${origin.toHuman()} to ${target.toHuman()}`);
+        console.log(
+          `transfer ${
+            Number(amount.toString()) / 10 ** decimal
+          } KAR from ${origin.toHuman()} to ${target.toHuman()}`
+        );
       }
-    })
+    });
   });
+
+  return unsubscribe;
 };
 
 subscribeTransferEvents();

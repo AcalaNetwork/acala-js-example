@@ -9,9 +9,9 @@ const currenciesTransfer = async () => {
   const signer = getSigner();
 
   // transfer 1 KAR to `dest`
-  const dest = 'seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW';
-  const token = { TOKEN: 'KAR' }
-	const amount = 1 * (10 ** symbolsDecimals['KAR']);
+  const dest = "seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW";
+  const token = { TOKEN: "KAR" };
+  const amount = 1 * 10 ** symbolsDecimals["KAR"];
 
   const extrinsic = api.tx.currencies.transfer(dest, token, amount);
 

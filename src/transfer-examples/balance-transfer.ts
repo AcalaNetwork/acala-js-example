@@ -10,8 +10,8 @@ const balanceTransfer = async () => {
   const signer = getSigner();
 
   // transfer 1 KAR to `dest`
-  const dest = 'seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW';
-	const amount = 1 * (10 ** symbolsDecimals['KAR']);
+  const dest = "seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW";
+  const amount = 1 * 10 ** symbolsDecimals["KAR"];
 
   const extrinsic = api.tx.balances.transfer(dest, amount);
 
