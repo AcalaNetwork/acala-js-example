@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config();
 
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { options } from "@acala-network/api";
+
+dotenv.config();
 
 export const getPolkadotApiProvider = async () => {
   const provider = new WsProvider(process.env.WS_NODE_ENDPOINT, 100);
