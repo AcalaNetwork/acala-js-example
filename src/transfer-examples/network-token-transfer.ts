@@ -2,7 +2,10 @@ import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 import getSystemParameters from "../utils/getSystemParameters";
 
-const currenciesTransfer = async () => {
+const NETWORK_TOKEN_SYMBOL = "KAR";
+
+// transfer network token
+const networkTokenTransfer = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
@@ -10,14 +13,13 @@ const currenciesTransfer = async () => {
 
   // transfer 1 KAR to `dest`
   const dest = "seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW";
-  const token = { TOKEN: "KAR" };
-  const amount = 1 * 10 ** symbolsDecimals["KAR"];
+  const amount = 1 * 10 ** symbolsDecimals[NETWORK_TOKEN_SYMBOL];
 
-  const extrinsic = api.tx.currencies.transfer(dest, token, amount);
+  const extrinsic = api.tx.balances.transfer(dest, amount);
 
   const hash = await extrinsic.signAndSend(signer);
 
-  console.log("transfer at hash", hash.toHuman());
+  console.log("transfer hash", hash.toHuman());
 };
 
-currenciesTransfer();
+networkTokenTransfer();

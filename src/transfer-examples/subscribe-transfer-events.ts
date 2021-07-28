@@ -10,7 +10,9 @@ const subscribeTransferEvents = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  // NOTE: if transfer native token using currencies section, there will be two events: currencies.Transferred and balances.Transfer.
+  // NOTE: if network token is transferred using "currencies" module, there will be emitted two events:
+  // -  currencies.Transferred
+  // -  balances.Transfer
   const unsubscribe = await api.query.system.events((events) => {
     events.forEach((event) => {
       const { section, method } = event.event;
@@ -53,7 +55,7 @@ const subscribeTransferEvents = async () => {
         console.log(
           `transfer ${
             Number(amount.toString()) / 10 ** decimal
-          } KAR from ${origin.toHuman()} to ${target.toHuman()}`
+          } KSM from ${origin.toHuman()} to ${target.toHuman()}`
         );
       }
     });
