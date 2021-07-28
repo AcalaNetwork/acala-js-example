@@ -6,6 +6,7 @@ const subscribeTransferEvents = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
+  // NOTE: if transfer native token using currencies section, there will be two events: currencies.Transferred and balances.Transfer.
   const unsubscribe = await api.query.system.events((events) => {
     events.forEach((event) => {
       const { section, method } = event.event;
@@ -27,7 +28,6 @@ const subscribeTransferEvents = async () => {
       }
 
       // subscribe transfer through balances section
-      // balances.Transfer
       if (section === 'balances' && method === 'Transfer') {
         // [ORIGIN, TARGET, AMOUNT]
         const data = event.event.data;
