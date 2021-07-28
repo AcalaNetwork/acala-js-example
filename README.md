@@ -2,8 +2,15 @@
 
 The project contains frontend and backend examples of code to build services that will use Acala / Karura ledger.
 
-You can check backend examples here:
-[DEX Backend Examples](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/dex-examples/dex-examples.md)
+## Backend examples:
+
+### [Token Transfers & Subscriptions](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/transfer-examples/readme.md)
+
+### [DEX Examples](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/dex-examples/dex-examples.md)
+
+---
+
+## Frontend Example
 
 To run the frontend app, you can follow the guide here.
 
