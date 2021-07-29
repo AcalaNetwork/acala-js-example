@@ -49,6 +49,17 @@
     lodash "^4.17.20"
     rxjs "^7.2.0"
 
+"@acala-network/sdk-wallet@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@acala-network/sdk-wallet/-/sdk-wallet-2.0.1.tgz#2c5d8e0d9d2353919e87a7c59a3e15eabc24a1c2"
+  integrity sha512-HiyuJARtuErntrlli3y4Q6NDb9kPQ8I8/fDPOGapbbXM3dpHiO3BlR4hT4z/j+2AfFLHM2KBo0QP1nCbpSOYPw==
+  dependencies:
+    "@acala-network/sdk-core" "2.0.1"
+    "@polkadot/api" "^5.2.1"
+    "@polkadot/types" "^5.2.1"
+    lodash "^4.17.20"
+    rxjs "^7.2.0"
+
 "@acala-network/type-definitions@2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@acala-network/type-definitions/-/type-definitions-2.0.1.tgz#14dd211ea3192acd826a0834b851bc6c149dd615"

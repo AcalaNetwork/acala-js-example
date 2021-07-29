@@ -6,6 +6,7 @@
     "@acala-network/api": "^2.0.1",
     "@acala-network/sdk-core": "^2.0.1",
     "@acala-network/sdk-swap": "^2.0.1",
+    "@acala-network/sdk-wallet": "^2.0.1",
     "@polkadot/api": "^5.2.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
