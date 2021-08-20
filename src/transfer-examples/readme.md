@@ -8,7 +8,7 @@ All tokens supported by Karura runtime are native tokens and can be transferred 
 ### Transferring Network token (KAR)
 
 
-```typescript=
+```typescript
     const dest = "<DESTINATION_ADDRESSS>";
     const amount = 1 * 10 ** symbolsDecimals[NETWORK_TOKEN_SYMBOL];
     const extrinsic = api.tx.balances.transfer(dest, amount);
@@ -18,14 +18,14 @@ All tokens supported by Karura runtime are native tokens and can be transferred 
 [network-token-transfer.ts](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/transfer-examples/network-token-transfer.ts)
 
 To run:
-```bash=
+```bash
 npx ts-node src/transfer-examples/network-token-transfer.ts
 ```
 
 ### Transferring all native tokens
 
 
-```typescript=
+```typescript
     const dest = "<DESTINATION_ADDRESS>";
     const token = { TOKEN: "KSM" };
     const amount = 1 * 10 ** symbolsDecimals["KSM"];
@@ -36,7 +36,7 @@ npx ts-node src/transfer-examples/network-token-transfer.ts
 [general-token-transfer.ts](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/transfer-examples/general-token-transfer.ts)
 
 To run:
-```bash=
+```bash
 npx ts-node src/transfer-examples/general-token-transfer.ts
 ```
 
@@ -48,7 +48,7 @@ npx ts-node src/transfer-examples/general-token-transfer.ts
 
     > Note :warning: when Network Token (KAR) is transferred using `currencies` module both events will be emitted.
 
-```typescript=
+```typescript
     await api.query.system.events((events) => {
     events.forEach((event) => {
         const { section, method } = event.event;
@@ -65,6 +65,6 @@ npx ts-node src/transfer-examples/general-token-transfer.ts
 [subscribe-transfer-events.ts](https://github.com/AcalaNetwork/acala-js-example/blob/bf702ab6000928e05c309aecf57ad197648e07e2/src/transfer-examples/subscribe-transfer-events.ts)
 
 To run:
-```bash=
+```bash
 npx ts-node src/transfer-examples/subscribe-transfer-events.ts
 ```
