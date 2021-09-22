@@ -55,7 +55,7 @@ KUSD BEFOER: ${beforeKUSDBalance.freeBalance.toString()}
 
         console.log(`
 KAR AFTER: ${afterKARBalance.freeBalance.toString()}
-KAR AFTER: ${afterKUSDBalance.freeBalance.toString()}
+KUSD AFTER: ${afterKUSDBalance.freeBalance.toString()}
 RECEIVE: ${afterKUSDBalance.freeBalance
           .sub(beforeKUSDBalance.freeBalance)
           .toString()}
