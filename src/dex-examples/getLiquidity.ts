@@ -7,7 +7,7 @@ const getLiquidity = async () => {
       TOKEN: "KAR",
     },
     {
-      TOKEN: "KUSD",
+      TOKEN: "KSM",
     },
   ]);
   console.log((test as any).map((t) => t.toHuman()));
