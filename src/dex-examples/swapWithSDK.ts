@@ -32,8 +32,8 @@ const swapWithSDK = async () => {
   );
 
   console.log(`
-KAR BEFOER: ${beforeKARBalance.freeBalance.toString()}
-KUSD BEFOER: ${beforeKUSDBalance.freeBalance.toString()}
+KAR BEFORE: ${beforeKARBalance.freeBalance.toString()}
+KUSD BEFORE: ${beforeKUSDBalance.freeBalance.toString()}
   `);
 
   await api.tx.dex
