@@ -8,7 +8,7 @@
     "@acala-network/sdk-swap": "^3.0.3-16",
     "@acala-network/sdk-wallet": "^3.0.3-16",
     "@polkadot/extension-dapp": "^0.42.5-0",
-    "@polkadot/api": "7.1.2-0",
+    "@polkadot/api": "^6.5.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
