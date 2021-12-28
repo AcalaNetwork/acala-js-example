@@ -126,7 +126,7 @@ function App() {
   }, [api, inputACA, extension, selectedAddress, decimals]);
 
   useEffect(() => {
-    const provider = new WsProvider(process.env.WS_NODE_ENDPOINT);
+    const provider = new WsProvider(process.env.REACT_APP_WS_NODE_ENDPOINT);
 
     const api = new ApiPromise(
       options({
