@@ -4,7 +4,7 @@ const getPositions = async () => {
   const api = await getPolkadotApi();
   const result = await api.query.loans.positions(
     { TOKEN: "KSM" },
-    "<ACCOUNT_ID>"
+      process.env.ACCOUNT_ID
   );
   console.log(result.toHuman());
 };

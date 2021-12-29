@@ -6,7 +6,7 @@ const authorize = async () => {
 
   const signer = getSigner();
 
-  const accountId = "<ACCOUNT_ID>";
+  const accountId = process.env.ACCOUNT_ID;
   const extrinsic = api.tx.honzon.authorize({ TOKEN: "KSM" }, accountId);
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
