@@ -1,7 +1,8 @@
+import { ApiPromise } from '@polkadot/api';
 import getPolkadotApi from "../utils/getPolkadotApi";
 
-const getTradingPairStatus = async () => {
-  const api = await getPolkadotApi();
+const getTradingPairStatus = async (polkadotApi?: ApiPromise) => {
+  const api = polkadotApi || (await getPolkadotApi());
   const status = await api.query.dex.tradingPairStatuses([
     {
       TOKEN: "KAR",
@@ -12,4 +13,3 @@ const getTradingPairStatus = async () => {
   ]);
   console.log(status.toString());
 };
-getTradingPairStatus();

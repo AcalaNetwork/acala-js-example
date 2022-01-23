@@ -3,6 +3,9 @@ import { options } from "@acala-network/api";
 import { InjectedAccount, InjectedExtension } from "@polkadot/extension-inject/types";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { web3Enable } from "@polkadot/extension-dapp";
+import { addLiquidity } from "./dex-examples/addLiquidity";
+import { getLiquidity } from "./dex-examples/getLiquidity";
+import { getProvisioningPool } from "./dex-examples/getProvisioningPool";
 
 const formatNumber = (number, decimals) => {
   if (number.toString() === "0") return "0";
@@ -116,7 +119,7 @@ function App() {
     );
 
     api.isReady.then(() => {
-      console.log("Api Ready");
+      console.log("Api Ready for endpoint: " + process.env.REACT_APP_WS_NODE_ENDPOINT);
       setApi(api);
     });
   }, []);
@@ -216,53 +219,72 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h2> Swap ACA to AUSD example </h2>
+    <div className="App" style={{ maxWidth: "40vw" }}>
       <div>
-        <select defaultValue="" value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)}>
-          <option value="" disabled hidden>
-            Choose Account
-          </option>{" "}
-          {(accountList || []).map(({ address, name }) => (
-            <option key={address} value={address}>
-              {" "}
-              {name}{" "}
-            </option>
-          ))}{" "}
-        </select>
-      </div>
-      <div> -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </div>
-      <div> Address: {selectedAddress || "account not selected"} </div>
-      <div> -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </div>{" "}
-      {selectedAddress && (
+        <h2> Swap ACA to AUSD example </h2>
         <div>
+          <select defaultValue="" value={selectedAddress} onChange={(event) => setSelectedAddress(event.target.value)}>
+            <option value="" disabled hidden>
+              Choose Account
+            </option>{" "}
+            {(accountList || []).map(({ address, name }) => (
+              <option key={address} value={address}>
+                {" "}
+                {name}{" "}
+              </option>
+            ))}{" "}
+          </select>
+        </div>
+        <hr />
+        <div> Address: {selectedAddress || "account not selected"} </div>
+        <hr />
+        {selectedAddress && (
           <div>
-            {" "}
-            ACA balance: {formatedACA}
-            ACA{" "}
-          </div>{" "}
-          <div> -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </div>
-          <div>
-            Input ACA: & nbsp;{" "}
-            <input type="text" value={inputACA} onChange={(event) => setInputACA(parseInt(event.target.value))} />
-            <button disabled={isSubmiting} onClick={swap}>
-              SWAP ACA
-            </button>
             <div>
               {" "}
-              To receive: {(inputACA * ausdPerAca).toFixed(2) || 0}
-              AUSD
+              ACA balance: {formatedACA}
+              ACA{" "}
+            </div>{" "}
+            <hr />
+            <div>
+              Input ACA: &nbsp;{" "}
+              <input type="text" value={inputACA} onChange={(event) => setInputACA(parseInt(event.target.value))} />
+              <button disabled={isSubmiting} onClick={swap}>
+                SWAP ACA
+              </button>
+              <div>
+                {" "}
+                To receive: {(inputACA * ausdPerAca).toFixed(2) || 0}
+                AUSD
+              </div>
             </div>
+            <hr />
+            <div>
+              {" "}
+              AUSD balance: {formatedDOT}
+              AUSD{" "}
+            </div>{" "}
+            <hr />
           </div>
-          <div> -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </div>
-          <div>
-            {" "}
-            AUSD balance: {formatedDOT}
-            AUSD{" "}
-          </div>{" "}
-          <div> -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </div>{" "}
-        </div>
-      )}
+        )}
+      </div>
+      <h1>Other examples (check console for results)</h1>
+      <div>
+        <h2>Add liquidity example</h2>
+        <button onClick={() => addLiquidity(api)}>Add Liquidity</button>
+      </div>
+      <div>
+        <h2>Get liquidity example</h2>
+        <button onClick={() => getLiquidity(api)}>Get Liquidity</button>
+      </div>
+      <div>
+        <h2>Get provisioning liquidity example</h2>
+        <button onClick={() => getProvisioningPool(api)}>Get Liquidity</button>
+      </div>
+      <div>
+        <h2>Get provisioning liquidity example</h2>
+        <button onClick={() => getProvisioningPool(api)}>Get Liquidity</button>
+      </div>
     </div>
   );
 }

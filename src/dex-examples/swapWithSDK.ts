@@ -1,11 +1,12 @@
 import { FixedPointNumber, Token } from "@acala-network/sdk-core";
 import { SwapPromise } from "@acala-network/sdk-swap";
 import { WalletPromise } from "@acala-network/sdk-wallet";
+import { ApiPromise } from '@polkadot/api';
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 
-const swapWithSDK = async () => {
-  const api = await getPolkadotApi();
+const swapWithSDK = async (polkadotApi?: ApiPromise) => {
+  const api = polkadotApi || (await getPolkadotApi());
 
   const signer = getSigner();
 
