@@ -158,6 +158,7 @@ function App() {
         const tokenDecimals = result.tokenDecimals.isNone ? [] : result.tokenDecimals.value;
         const tokenSymbol = result.tokenSymbol.isNone ? [] : result.tokenSymbol.value;
 
+        // @ts-ignore
         for (let i = 0; i < tokenSymbol.length; i++) {
           decimals[tokenSymbol[i]] = tokenDecimals[i].toNumber();
         }
