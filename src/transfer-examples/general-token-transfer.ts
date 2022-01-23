@@ -3,7 +3,7 @@ import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 import getSystemParameters from "../utils/getSystemParameters";
 
-const generalTokenTransfer = async (polkadotApi?: ApiPromise) => {
+export const generalTokenTransfer = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
   const { symbolsDecimals } = await getSystemParameters(api);
 
@@ -20,5 +20,3 @@ const generalTokenTransfer = async (polkadotApi?: ApiPromise) => {
 
   console.log("transfer at hash", hash.toHuman());
 };
-
-generalTokenTransfer();

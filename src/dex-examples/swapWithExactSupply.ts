@@ -1,11 +1,11 @@
-import { ApiPromise } from '@polkadot/api';
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 import getSystemParameters from "../utils/getSystemParameters";
 
 const amountOfACAToConvert = 10;
 
-const swapWithExactSupply = async (polkadotApi?: ApiPromise) => {
+export const swapWithExactSupply = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
   const { symbolsDecimals } = await getSystemParameters(api);
 
@@ -26,4 +26,3 @@ const swapWithExactSupply = async (polkadotApi?: ApiPromise) => {
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
 };
-swapWithExactSupply();

@@ -1,11 +1,11 @@
 import { FixedPointNumber, Token } from "@acala-network/sdk-core";
 import { SwapPromise } from "@acala-network/sdk-swap";
 import { WalletPromise } from "@acala-network/sdk-wallet";
-import { ApiPromise } from '@polkadot/api';
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 
-const swapWithSDK = async (polkadotApi?: ApiPromise) => {
+export const swapWithSDK = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
 
   const signer = getSigner();
@@ -27,10 +27,7 @@ const swapWithSDK = async (polkadotApi?: ApiPromise) => {
   console.log(`estimate target amount ${parameters.output.balance.toString()}`);
 
   const beforeKARBalance = await wallet.queryBalance(signer.address, karToken);
-  const beforeKUSDBalance = await wallet.queryBalance(
-    signer.address,
-    kusdToken
-  );
+  const beforeKUSDBalance = await wallet.queryBalance(signer.address, kusdToken);
 
   console.log(`
 KAR BEFORE: ${beforeKARBalance.freeBalance.toString()}
@@ -41,28 +38,18 @@ KUSD BEFORE: ${beforeKUSDBalance.freeBalance.toString()}
     .swapWithExactSupply(
       path.map((item) => item.toChainData()),
       supplyAmount.toChainData(),
-      parameters.output.balance.mul(slippage).toChainData()
+      parameters.output.balance.mul(slippage).toChainData(),
     )
     .signAndSend(signer, async (result) => {
       if (result.isInBlock) {
-        const afterKARBalance = await wallet.queryBalance(
-          signer.address,
-          karToken
-        );
-        const afterKUSDBalance = await wallet.queryBalance(
-          signer.address,
-          kusdToken
-        );
+        const afterKARBalance = await wallet.queryBalance(signer.address, karToken);
+        const afterKUSDBalance = await wallet.queryBalance(signer.address, kusdToken);
 
         console.log(`
 KAR AFTER: ${afterKARBalance.freeBalance.toString()}
 KUSD AFTER: ${afterKUSDBalance.freeBalance.toString()}
-RECEIVE: ${afterKUSDBalance.freeBalance
-          .sub(beforeKUSDBalance.freeBalance)
-          .toString()}
+RECEIVE: ${afterKUSDBalance.freeBalance.sub(beforeKUSDBalance.freeBalance).toString()}
       `);
       }
     });
 };
-
-swapWithSDK();

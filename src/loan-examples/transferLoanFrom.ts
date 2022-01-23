@@ -2,7 +2,7 @@ import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 
-const transferLoanFrom = async (polkadotApi?: ApiPromise) => {
+export const transferLoanFrom = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
 
   const signer = getSigner();
@@ -12,4 +12,3 @@ const transferLoanFrom = async (polkadotApi?: ApiPromise) => {
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
 };
-transferLoanFrom();

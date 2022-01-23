@@ -6,7 +6,6 @@ export const getSigner = () => {
   });
 
   const phrase = process.env.SEED_PHRASE || process.env.REACT_APP_SEED_PHRASE;
-    console.log('phrase', phrase);
   // Add Alice to our keyring with a hard-deived path (empty phrase, so uses dev)
   return keyring.addFromMnemonic(phrase);
 };

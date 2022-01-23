@@ -6,6 +6,11 @@ import { web3Enable } from "@polkadot/extension-dapp";
 import { addLiquidity } from "./dex-examples/addLiquidity";
 import { getLiquidity } from "./dex-examples/getLiquidity";
 import { getProvisioningPool } from "./dex-examples/getProvisioningPool";
+import { getTradingPairStatus } from "./dex-examples/getTradingPairStatuses";
+import { removeLiquidity } from './dex-examples/removeLiquidity';
+import { swapWithExactSupply } from './dex-examples/swapWithExactSupply';
+import { swapWithExactTarget } from './dex-examples/swapWithExactTarget';
+import { swapWithSDK } from './dex-examples/swapWithSDK';
 
 const formatNumber = (number, decimals) => {
   if (number.toString() === "0") return "0";
@@ -270,20 +275,37 @@ function App() {
       </div>
       <h1>Other examples (check console for results)</h1>
       <div>
-        <h2>Add liquidity example</h2>
+        <h2>Add liquidity</h2>
         <button onClick={() => addLiquidity(api)}>Add Liquidity</button>
       </div>
       <div>
-        <h2>Get liquidity example</h2>
-        <button onClick={() => getLiquidity(api)}>Get Liquidity</button>
+        <h2>Get liquidity</h2>
+        <button onClick={() => getLiquidity(api)}>Get liquidity</button>
       </div>
       <div>
-        <h2>Get provisioning liquidity example</h2>
-        <button onClick={() => getProvisioningPool(api)}>Get Liquidity</button>
+        <h2>Get provisioning pool</h2>
+        <button onClick={() => getProvisioningPool(api)}>Get provisioning pool</button>
+      </div>
+
+      <div>
+        <h2>Get Trading Pair Statuses</h2>
+        <button onClick={() => getTradingPairStatus(api)}>Get Trading Pair Statuses</button>
       </div>
       <div>
-        <h2>Get provisioning liquidity example</h2>
-        <button onClick={() => getProvisioningPool(api)}>Get Liquidity</button>
+        <h2>Remove Liquidity</h2>
+        <button onClick={() => removeLiquidity(api)}>Remove Liquidity</button>
+      </div>
+      <div>
+        <h2>Swap with exact supply</h2>
+        <button onClick={() => swapWithExactSupply(api)}>Swap with exact supply</button>
+      </div>
+      <div>
+        <h2>Swap with exact target</h2>
+        <button onClick={() => swapWithExactTarget(api)}>Swap with exact target</button>
+      </div>
+      <div>
+        <h2>Swap with SDK</h2>
+        <button onClick={() => swapWithSDK(api)}>Swap with SDK</button>
       </div>
     </div>
   );

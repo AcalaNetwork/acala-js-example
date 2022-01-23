@@ -1,8 +1,8 @@
-import { ApiPromise } from '@polkadot/api';
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 
-const removeLiquidity = async (polkadotApi?: ApiPromise) => {
+export const removeLiquidity = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
 
   const signer = getSigner();
@@ -26,9 +26,8 @@ const removeLiquidity = async (polkadotApi?: ApiPromise) => {
     remove_share,
     min_withdrawn_a,
     min_withdrawn_b,
-    by_unstake
+    by_unstake,
   );
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
 };
-removeLiquidity();

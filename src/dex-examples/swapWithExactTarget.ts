@@ -5,7 +5,7 @@ import getSystemParameters from "../utils/getSystemParameters";
 
 const amountOfAUSDToConvert = 1;
 
-const swapWithExactTarget = async (polkadotApi?: ApiPromise) => {
+export const swapWithExactTarget = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
   const { symbolsDecimals } = await getSystemParameters(api);
 
@@ -27,4 +27,3 @@ const swapWithExactTarget = async (polkadotApi?: ApiPromise) => {
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
 };
-swapWithExactTarget();

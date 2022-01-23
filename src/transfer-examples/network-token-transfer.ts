@@ -6,7 +6,7 @@ import getSystemParameters from "../utils/getSystemParameters";
 const NETWORK_TOKEN_SYMBOL = "KAR";
 
 // transfer network token
-const networkTokenTransfer = async (polkadotApi?: ApiPromise) => {
+export const networkTokenTransfer = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
   const { symbolsDecimals } = await getSystemParameters(api);
 
@@ -23,4 +23,3 @@ const networkTokenTransfer = async (polkadotApi?: ApiPromise) => {
   console.log("transfer hash", hash.toHuman());
 };
 
-networkTokenTransfer();

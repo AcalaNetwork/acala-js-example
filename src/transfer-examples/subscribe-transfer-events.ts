@@ -3,7 +3,7 @@ import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSystemParameters from "../utils/getSystemParameters";
 
-const subscribeTransferEvents = async (polkadotApi?: ApiPromise) => {
+export const subscribeTransferEvents = async (polkadotApi?: ApiPromise) => {
   const api = polkadotApi || (await getPolkadotApi());
   const { symbolsDecimals } = await getSystemParameters(api);
 
@@ -59,4 +59,3 @@ const subscribeTransferEvents = async (polkadotApi?: ApiPromise) => {
   return unsubscribe;
 };
 
-subscribeTransferEvents();
