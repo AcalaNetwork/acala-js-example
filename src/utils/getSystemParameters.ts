@@ -1,13 +1,10 @@
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "./getPolkadotApi";
 
-export const getSystemParameters = async () => {
-  const api = await getPolkadotApi();
+export const getSystemParameters = async (api: ApiPromise) => {
   const params = await api.rpc.system.properties();
-  const decimals =
-    !params.tokenDecimals.isNone && params.tokenDecimals.value.toHuman();
-  const symbols =
-    !params.tokenSymbol.isNone &&
-    (params.tokenSymbol.value.toHuman() as string[]);
+  const decimals = !params.tokenDecimals.isNone && params.tokenDecimals.value.toHuman();
+  const symbols = !params.tokenSymbol.isNone && (params.tokenSymbol.value.toHuman() as string[]);
   // console.log('decimals', decimals);
   // console.log('symbols', symbols);
   const symbolsDecimals /* Record<string, string> */ = symbols.reduce(
@@ -15,7 +12,7 @@ export const getSystemParameters = async () => {
       ...acc,
       [symbol]: +decimals[index],
     }),
-    {}
+    {},
   );
   return {
     decimals,

@@ -1,0 +1,47 @@
+{
+  "extends": [
+    "plugin:prettier/recommended",
+    "ts-react-important-stuff",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "rules": {
+        "no-undef": "off",
+        "react/prop-types": "off",
+        "react/display-name": "off"
+      }
+    }
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-console": "warn",
+    "prettier/prettier": [
+      "warn",
+      {
+        "tabWidth": 2,
+        "useTabs": false,
+        "endOfLine": "auto",
+        "semi": true,
+        "singleQuote": false,
+        "quoteProps": "as-needed",
+        "printWidth": 120,
+        "bracketSpacing": true,
+        "arrowParens": "always",
+        "trailingComma": "all"
+      }
+    ]
+  },
+  "globals": {
+    "process": true,
+    "CONFIG": true
+  }
+}

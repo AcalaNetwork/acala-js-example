@@ -1,10 +1,11 @@
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSigner from "../utils/getSigner";
 import getSystemParameters from "../utils/getSystemParameters";
 
-const addLiquidity = async () => {
-  const api = await getPolkadotApi();
-  const { symbolsDecimals } = await getSystemParameters();
+export const addLiquidity = async (polkadotApi?: ApiPromise) => {
+  const api = polkadotApi || (await getPolkadotApi());
+  const { symbolsDecimals } = await getSystemParameters(api);
 
   const signer = getSigner();
   const currency_id_a = {
@@ -26,9 +27,8 @@ const addLiquidity = async () => {
     max_amount_a,
     max_amount_b,
     min_share_increment,
-    stake_increment_share
+    stake_increment_share,
   );
   const hash = await extrinsic.signAndSend(signer);
   console.log("hash", hash.toHuman());
 };
-addLiquidity();

@@ -1,14 +1,11 @@
-import {
-  CurrencyId,
-  Balance,
-  AccountId,
-} from "@acala-network/types/interfaces";
+import { CurrencyId, Balance, AccountId } from "@acala-network/types/interfaces";
+import { ApiPromise } from "@polkadot/api";
 import getPolkadotApi from "../utils/getPolkadotApi";
 import getSystemParameters from "../utils/getSystemParameters";
 
-const subscribeTransferEvents = async () => {
-  const api = await getPolkadotApi();
-  const { symbolsDecimals } = await getSystemParameters();
+export const subscribeTransferEvents = async (polkadotApi?: ApiPromise) => {
+  const api = polkadotApi || (await getPolkadotApi());
+  const { symbolsDecimals } = await getSystemParameters(api);
 
   // NOTE: if network token is transferred using "currencies" module, there will be emitted two events:
   // -  currencies.Transferred
@@ -36,7 +33,7 @@ const subscribeTransferEvents = async () => {
         console.log(
           `transfer ${Number(amount.toString()) / 10 ** decimal} ${(
             data[0] as CurrencyId
-          ).toString()} from ${origin.toHuman()} to ${target.toHuman()}`
+          ).toString()} from ${origin.toHuman()} to ${target.toHuman()}`,
         );
       }
 
@@ -53,9 +50,7 @@ const subscribeTransferEvents = async () => {
         const decimal = symbolsDecimals["KAR"];
 
         console.log(
-          `transfer ${
-            Number(amount.toString()) / 10 ** decimal
-          } KSM from ${origin.toHuman()} to ${target.toHuman()}`
+          `transfer ${Number(amount.toString()) / 10 ** decimal} KSM from ${origin.toHuman()} to ${target.toHuman()}`,
         );
       }
     });
@@ -64,4 +59,3 @@ const subscribeTransferEvents = async () => {
   return unsubscribe;
 };
 
-subscribeTransferEvents();
