@@ -11,6 +11,13 @@ import { removeLiquidity } from './dex-examples/removeLiquidity';
 import { swapWithExactSupply } from './dex-examples/swapWithExactSupply';
 import { swapWithExactTarget } from './dex-examples/swapWithExactTarget';
 import { swapWithSDK } from './dex-examples/swapWithSDK';
+import { adjustLoan } from './loan-examples/adjustLoan';
+import { authorize } from './loan-examples/authorize';
+import { closeLoanWithDex } from './loan-examples/close-vault-with-dex';
+import { getCollateralParams } from './loan-examples/collateral-params';
+import { getDebitExchangeRate } from './loan-examples/debit-exchange-rate';
+import { networkTokenTransfer } from './transfer-examples/network-token-transfer';
+import { subscribeTransferEvents } from './transfer-examples/subscribe-transfer-events';
 
 const formatNumber = (number, decimals) => {
   if (number.toString() === "0") return "0";
@@ -306,6 +313,34 @@ function App() {
       <div>
         <h2>Swap with SDK</h2>
         <button onClick={() => swapWithSDK(api)}>Swap with SDK</button>
+      </div>
+      <div>
+        <h2>Adjust Loan</h2>
+        <button onClick={() => adjustLoan(api)}>Adjust Loan</button>
+      </div>
+      <div>
+        <h2>Authorize</h2>
+        <button onClick={() => authorize(api)}>Authorize</button>
+      </div>
+      <div>
+        <h2>Close vault with DEX</h2>
+        <button onClick={() => closeLoanWithDex(api)}>Close vault with DEX</button>
+      </div>
+      <div>
+        <h2>Get Collateral params</h2>
+        <button onClick={() => getCollateralParams(api)}>Get Collateral params</button>
+      </div>
+      <div>
+        <h2>Get Debit Exchange Rate</h2>
+        <button onClick={() => getDebitExchangeRate(api)}>Get Debit Exchange Rate</button>
+      </div>
+      <div>
+        <h2>Network Token Transfer</h2>
+        <button onClick={() => networkTokenTransfer(api)}>Network Token Transfer</button>
+      </div>
+      <div>
+        <h2>Subscribe Transfer Events</h2>
+        <button onClick={() => subscribeTransferEvents(api)}>Subscribe Transfer Events</button>
       </div>
     </div>
   );
