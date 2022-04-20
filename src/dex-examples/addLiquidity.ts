@@ -6,7 +6,7 @@ const addLiquidity = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  const signer = getSigner();
+  const signer = await getSigner();
   const currency_id_a = {
     TOKEN: "KAR",
   };

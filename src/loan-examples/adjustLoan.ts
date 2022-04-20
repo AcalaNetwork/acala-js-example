@@ -4,7 +4,7 @@ import getSigner from "../utils/getSigner";
 const adjustLoan = async () => {
   const api = await getPolkadotApi();
 
-  const signer = getSigner();
+  const signer = await getSigner();
 
   const currencyId = { TOKEN: "KSM" };
   const collateralAdjustment = "";

@@ -4,7 +4,7 @@ import getSigner from "../utils/getSigner";
 const closeLoanWithDex = async () => {
   const api = await getPolkadotApi();
 
-  const signer = getSigner();
+  const signer = await getSigner();
 
   const extrinsic = api.tx.honzon.closeLoanHasDebitByDex(
     { TOKEN: "KSM" },

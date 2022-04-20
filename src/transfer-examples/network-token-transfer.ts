@@ -9,7 +9,7 @@ const networkTokenTransfer = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  const signer = getSigner();
+  const signer = await getSigner();
 
   // transfer 1 KAR to `dest`
   const dest = "seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW";
@@ -19,7 +19,13 @@ const networkTokenTransfer = async () => {
 
   const hash = await extrinsic.signAndSend(signer);
 
-  console.log("transfer hash", hash.toHuman());
+  console.log("Transfer hash:", hash.toHuman());
 };
 
-networkTokenTransfer();
+networkTokenTransfer()
+  .catch((err) => {
+    console.error("Error:", Object.entries(err as object), err);
+  })
+  .finally(() => {
+    process.exit();
+  });
