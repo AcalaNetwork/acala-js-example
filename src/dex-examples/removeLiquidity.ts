@@ -4,7 +4,7 @@ import getSigner from "../utils/getSigner";
 const removeLiquidity = async () => {
   const api = await getPolkadotApi();
 
-  const signer = getSigner();
+  const signer = await getSigner();
   const currency_id_a = {
     TOKEN: "KAR",
   };

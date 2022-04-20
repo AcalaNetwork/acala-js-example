@@ -8,7 +8,7 @@ const swapWithExactTarget = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  const signer = getSigner();
+  const signer = await getSigner();
   const targetAmount = amountOfAUSDToConvert * 10 ** symbolsDecimals["KUSD"];
 
   const path = [

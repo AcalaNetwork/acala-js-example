@@ -7,7 +7,7 @@ import getSigner from "../utils/getSigner";
 const swapWithSDK = async () => {
   const api = await getPolkadotApi();
 
-  const signer = getSigner();
+  const signer = await getSigner();
 
   const wallet = new WalletPromise(api);
 

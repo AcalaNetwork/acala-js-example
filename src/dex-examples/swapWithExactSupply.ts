@@ -8,7 +8,7 @@ const swapWithExactSupply = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  const signer = getSigner();
+  const signer = await getSigner();
   const supplyAmount = amountOfACAToConvert * 10 ** symbolsDecimals["KAR"];
 
   const path = [

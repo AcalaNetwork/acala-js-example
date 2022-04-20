@@ -6,7 +6,7 @@ const generalTokenTransfer = async () => {
   const api = await getPolkadotApi();
   const { symbolsDecimals } = await getSystemParameters();
 
-  const signer = getSigner();
+  const signer = await getSigner();
 
   // transfer 1 KSM to `dest`
   const dest = "seorgCZDzP5G3JEbsBjFdpQ4dTUgCWoPjQynyJqHCfXvZVW";
@@ -20,4 +20,10 @@ const generalTokenTransfer = async () => {
   console.log("transfer at hash", hash.toHuman());
 };
 
-generalTokenTransfer();
+generalTokenTransfer()
+  .catch((err) => {
+    console.error("Error:", Object.entries(err as object), err);
+  })
+  .finally(() => {
+    process.exit();
+  });
