@@ -4,9 +4,9 @@ The project contains frontend and backend examples of code to build services tha
 
 ## Backend examples:
 
-### [Token Transfers & Subscriptions](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/transfer-examples/readme.md)
+### [Token Transfers & Subscriptions](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/transfer-examples)
 
-### [DEX Examples](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/dex-examples/dex-examples.md)
+### [DEX Examples](https://github.com/AcalaNetwork/acala-js-example/blob/master/src/dex-examples)
 
 ---
 
